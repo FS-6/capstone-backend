@@ -1,3 +1,0 @@
-## kulineri server
-
-🚀 on development 🚀
