@@ -1,5 +1,3 @@
-const cloudinary = require("cloudinary").v2;
-
 const generateImage = (name) => {
   return `https://ui-avatars.com/api/?name=${name}&rounded=true&background=random&format=svg&bold=true`;
 };
