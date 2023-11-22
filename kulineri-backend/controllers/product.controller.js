@@ -1,5 +1,5 @@
 const { Product } = require("../models");
-const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
 
 const productController = {
   getAllProduct: async (req, res, next) => {
@@ -39,12 +39,16 @@ const productController = {
     }
   },
   getProductByCategory: async (req, res, next) => {
-    try {
-      const { categoryId } = req.params;
+    const categoryId = req.params.categoryId;
 
-      const products = await Product.find({
-        category: categoryId,
-      });
+    try {
+      const client = await MongoClient.connect(process.env.DB_URL);
+      const collection = client.db("kulineri_db").collection("products");
+
+      const products = await collection
+        .find({ category: categoryId })
+        .toArray();
+
       if (!products || products.length === 0) {
         return res.status(404).json({
           message: "Tidak ada produk dalam kategori ini",
