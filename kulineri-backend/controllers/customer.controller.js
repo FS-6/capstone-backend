@@ -50,15 +50,38 @@ const customerController = {
         return res.status(400).json({ message: "Password tidak sesuai" });
       }
 
-      // create jwt
+      // Set expiration time (2 hours in this case)
+      const expiresIn = 2 * 60 * 60; // 2 hours in seconds
+
+      // Create JWT with expiration time
       const token = jwt.sign(
         { _id: customer._id, email: customer.email },
-        process.env.CUSTOMER_KEY
+        process.env.CUSTOMER_KEY,
+        { expiresIn: expiresIn }
       );
 
       res.status(200).header("Authorization", token).json({
         token: token,
       });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getProfile: async (req, res, next) => {
+    try {
+      const customerId = req.customer._id;
+      const profile = await Customer.findById(customerId);
+
+      if (!profile) {
+        return res.status(404).json({
+          message: "Profile tidak ditemukan",
+        });
+      } else {
+        res.status(200).json({
+          message: "Berhasil mendapatkan profile",
+          data: profile,
+        });
+      }
     } catch (error) {
       next(error);
     }
@@ -102,7 +125,7 @@ const customerController = {
   },
   editCustomer: async (req, res, next) => {
     try {
-      const { customerId } = req.params;
+      const customerId = req.customer._id;
       const { password, ...data } = req.body;
 
       // Hash password hanya jika ada password baru
