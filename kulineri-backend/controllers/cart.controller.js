@@ -1,4 +1,4 @@
-const { Cart, Customer, Product } = require("../models");
+const { Cart, Product } = require("../models");
 
 const cartController = {
   getCart: async (req, res, next) => {
@@ -20,10 +20,37 @@ const cartController = {
       next(error);
     }
   },
+  getOneCart: async (req, res, next) => {
+    try {
+      const { cartId } = req.params;
+
+      const cart = await Cart.findById(cartId);
+
+      if (!cart) {
+        return res.status(404).json({
+          message: "Keranjang tidak ditemukan",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Berhasil mendapatkan semua keranjang",
+        data: cart,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
   addCart: async (req, res, next) => {
     try {
       const customerId = req.customer._id;
-      const { productId, quantity, totalPrice } = req.body;
+      const { productId, quantity } = req.body;
+
+      const productExist = await Product.findById(productId);
+      if (!productExist) {
+        return res.status(404).json({
+          message: "Produk tidak di temukan",
+        });
+      }
 
       // Cari apakah produk sudah ada dalam keranjang
       const existingCartItem = await Cart.findOne({
@@ -34,7 +61,6 @@ const cartController = {
       if (existingCartItem) {
         // Jika produk sudah ada, perbarui quantity dan totalPrice
         existingCartItem.quantity = quantity;
-        existingCartItem.totalPrice = totalPrice;
         await existingCartItem.save();
 
         return res.status(200).json({
@@ -48,7 +74,6 @@ const cartController = {
         customer: customerId,
         product: productId,
         quantity: quantity,
-        totalPrice: totalPrice,
       });
 
       // Simpan cartItem
