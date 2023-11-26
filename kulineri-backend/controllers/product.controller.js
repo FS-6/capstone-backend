@@ -47,11 +47,7 @@ const productController = {
       const product = await Product.find({
         name: { $regex: productName, $options: "i" },
       });
-      if (!product) {
-        res.status(404).json({
-          message: "Produk yang anda cari tidak di temukan",
-        });
-      } else if (product.length === 0) {
+      if (!product || product.length === 0) {
         res.status(404).json({
           message: "Produk yang anda cari tidak di temukan",
         });
