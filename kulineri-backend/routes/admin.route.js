@@ -27,6 +27,11 @@ router.get(
   verifyAdmin,
   productController.getOneProduct
 );
+router.get(
+  "/admin/customers/:customerId",
+  verifyAdmin,
+  customerController.getOneCustomer
+);
 
 // get product by category
 router.get(
@@ -45,11 +50,6 @@ router.post(
 );
 
 // edit
-router.put(
-  "/admin/customers/edit/:customerId",
-  verifyAdmin,
-  customerController.editCustomer
-);
 router.put(
   "/admin/products/edit/:productId",
   verifyAdmin,

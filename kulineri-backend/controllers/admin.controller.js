@@ -57,13 +57,20 @@ const adminController = {
         return res.status(400).json({ message: "Email tidak terdaftar" });
       }
 
-      const checkPassword = bcrypt.compare(password, admin.password);
+      const checkPassword = bcrypt.compareSync(password, admin.password);
       if (!checkPassword) {
         return res.status(400).json({ message: "Password tidak sesuai" });
       }
 
-      // create jwt
-      const token = jwt.sign({ _id: admin._id }, process.env.MASTER_KEY);
+      // Set expiration time (2 hours in this case)
+      const expiresIn = 2 * 60 * 60; // 2 hours in seconds
+
+      // Create JWT with expiration time
+      const token = jwt.sign(
+        { _id: admin._id, email: admin.email },
+        process.env.MASTER_KEY,
+        { expiresIn: expiresIn }
+      );
 
       res.status(200).header("Authorization", token).json({
         token: token,

@@ -1,5 +1,7 @@
 const { Product } = require("../models");
+const mongoose = require("mongoose");
 const { MongoClient } = require("mongodb");
+const { ObjectId } = require("mongodb");
 
 const productController = {
   getAllProduct: async (req, res, next) => {
@@ -32,6 +34,27 @@ const productController = {
 
       res.status(200).json({
         message: "Berhasil mendapatkan produk dengan id",
+        data: product,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  getProductByName: async (req, res, next) => {
+    try {
+      const { productName } = req.params;
+
+      const product = await Product.find({
+        name: { $regex: productName, $options: "i" },
+      });
+      if (!product || product.length === 0) {
+        res.status(404).json({
+          message: "Produk yang anda cari tidak di temukan",
+        });
+      }
+
+      res.status(200).json({
+        message: "Berhasil mendapatkan produk dengan nama",
         data: product,
       });
     } catch (error) {

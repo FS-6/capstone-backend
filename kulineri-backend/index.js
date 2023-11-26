@@ -9,9 +9,9 @@ const routes = require("./routes/index");
 const PORT = process.env.PORT || 3000;
 
 db.then(() => {
-  console.log("Server Terhubung dengan MonogDB ✅ 🚀");
+  console.log("Database Connected ✅ 🚀");
 }).catch(() => {
-  console.log("database offline ❌");
+  console.log("Database not Connected ❌");
 });
 
 app.use(cors());

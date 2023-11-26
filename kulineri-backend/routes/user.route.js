@@ -22,6 +22,22 @@ router.get(
 );
 router.get("/user/orders", verifyCustomer, orderController.getOrder);
 
+// get profile
+router.get("/user/profile", verifyCustomer, customerController.getProfile);
+
+// get one method
+router.get("/user/carts/:cartId", verifyCustomer, cartController.getOneCart);
+router.get(
+  "/user/transactions/:transactionId",
+  verifyCustomer,
+  transactionController.getOneTransaction
+);
+router.get(
+  "/user/orders/:orderId",
+  verifyCustomer,
+  orderController.getOneOrder
+);
+
 // post method
 router.post("/user/carts/add", verifyCustomer, cartController.addCart);
 router.post(
@@ -31,11 +47,24 @@ router.post(
 );
 router.post("/user/orders/add", verifyCustomer, orderController.createOrder);
 
+// edit method
+router.put("/user/edit", verifyCustomer, customerController.editCustomer);
+
 // delete method
 router.delete(
   "/user/carts/delete/:cartId",
   verifyCustomer,
   cartController.deleteCart
+);
+router.delete(
+  "/user/transactions/delete/:transactionId",
+  verifyCustomer,
+  transactionController.deleteTransaction
+);
+router.delete(
+  "/user/orders/delete/:orderId",
+  verifyCustomer,
+  orderController.deleteOrder
 );
 
 module.exports = router;

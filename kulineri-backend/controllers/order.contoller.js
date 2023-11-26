@@ -18,6 +18,23 @@ const orderController = {
       next(error);
     }
   },
+  getOneOrder: async (req, res, next) => {
+    try {
+      const { orderId } = req.params;
+      const order = await Order.findById(orderId);
+      if (!order) {
+        return res.status(404).json({
+          message: "Order tidak ditemukan",
+        });
+      }
+      return res.status(200).json({
+        message: "Berhasil mendapatkan order",
+        data: order,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
   createOrder: async (req, res, next) => {
     try {
       const customerId = req.customer._id;
@@ -46,6 +63,23 @@ const orderController = {
       return res.status(200).json({
         message: "Berhasil order",
         data: newOrder,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  deleteOrder: async (req, res, next) => {
+    try {
+      const { orderId } = req.params;
+      const order = await Order.findByIdAndDelete(orderId);
+      if (!order) {
+        return res.status(404).json({
+          message: "Order tidak ditemukan",
+        });
+      }
+      return res.status(200).json({
+        message: "Berhasil menghapus order",
+        data: order,
       });
     } catch (error) {
       next(error);
