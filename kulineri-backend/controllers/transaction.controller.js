@@ -20,6 +20,25 @@ const transactionController = {
       next(error);
     }
   },
+  getOneTransaction: async (req, res, next) => {
+    try {
+      const { transactionId } = req.params;
+
+      const transaction = await Transaction.findById(transactionId);
+      if (!transaction) {
+        return res.status(404).json({
+          message: "Transaksi tidak ditemukan",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Berhasil mendapatkan transaksi",
+        data: transaction,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
   createTransaction: async (req, res, next) => {
     try {
       const customerId = req.customer._id;
@@ -51,6 +70,27 @@ const transactionController = {
       return res.status(200).json({
         message: "Transaksi Sukses",
         data: newTransaction,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+  deleteTransaction: async (req, res, next) => {
+    try {
+      const { transactionId } = req.params;
+
+      const deletedTransaction = await Transaction.findByIdAndDelete(
+        transactionId
+      );
+      if (!deletedTransaction) {
+        return res.status(404).json({
+          message: "Transaksi tidak ditemukan",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Berhasil menghapus transaksi",
+        data: deletedTransaction,
       });
     } catch (error) {
       next(error);
