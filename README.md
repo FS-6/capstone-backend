@@ -1,6 +1,6 @@
 # Kulineri API
 
-- API Endpoint : https://lazy-shorts-fish.cyclic.app/
+- API Endpoint : https://amused-tan-viper.cyclic.app
 - API Documentation : https://documenter.getpostman.com/view/23075381/2s9YeAAa4C
 
 ## How to Run :
