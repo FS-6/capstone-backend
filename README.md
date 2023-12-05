@@ -1,6 +1,6 @@
 # Kulineri API
 
-- API Endpoint : https://amused-tan-viper.cyclic.app
+- API Endpoint : https://vivacious-foal-overcoat.cyclic.app/
 - API Documentation : https://documenter.getpostman.com/view/23075381/2s9YeAAa4C
 
 ## How to Run :
